@@ -1,0 +1,226 @@
+---
+title: "Assignment4"
+author: "Tabea"
+date: "16 November 2018"
+output: 
+  html_document: 
+    keep_md: yes
+---
+#Data visualization with Base R
+##Chapter 1
+
+```r
+Animals <-read.csv("C:/Users/Tabea/Downloads/Animals.csv", row.names = 1, sep = ";", header = TRUE)
+```
+###- 2 basic types of visualizations: 
+### -> exploratory visualization helps understanding data
+### -> explanatory visualization helps sharing with others
+
+### -> exploratory: plot(dataset)
+
+```r
+plot(Animals)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+### -> explanatory: plot(dataset$col1, dataset$col2, xlab = "Colname1", ylab = "Colname2")
+
+```r
+plot(Animals$Body_length, Animals$Body_weight)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+###- factor varibles give barplot
+### -> barplot()
+
+```r
+barplot(Animals$Age, horiz = TRUE)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+###- title of plot (within function): main = "title"
+
+```r
+barplot(Animals$Age, horiz = TRUE, main="Animal Age")
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+###- sunflowerplot(dataset$col1, dataset$col2)
+
+```r
+sunflowerplot(Animals$Body_length, Animals$Body_weight)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
+###- boxplot(var1 ~ var2, data = dataset)
+### -> how var1 varies across var2
+
+```r
+boxplot(Body_length~Body_weight, data=Animals)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
+###- mosaicplot(var1 ~ var2, data = dataset)
+
+```r
+mosaicplot(Age~Body_weight, data=Animals)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+###- add features to a plot
+### -> points() add points
+### -> lines() add lines, usually curved
+### -> text() add labels
+### -> pch = shape of scatters
+### -> col = colour
+### -> abline(a = intercept, b = slope, lty = linetype, lwd = differing width)
+
+```r
+plot(Animals$Body_length, Animals$Body_weight)
+points(Animals$Body_length, Animals$Age, pch=5, col= "red")
+abline(a=0, b=10, lty=2, lwd= 3)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
+###- plot multiple plots on single pane: par(mfrow = c(#rows,   #cols)) 
+### -> use par() to set graphical parameters
+
+###- add title later (directly after plot()): title("title")
+
+```r
+plot(Animals$Body_length, Animals$Body_weight)
+title("Weight vs Length")
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+###- log = "xy"
+
+```r
+plot(Animals$Body_length, Animals$Body_weight, log="y")
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+###- pie()  -> pie chart
+### -> not good to use -> bar charts better
+
+```r
+pie(Animals$Age)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+###- las = 2 makes labels perpendicular to axes
+###- cex.names = 0.5 makes name labels half the default size
+
+##Chapter 2
+
+###- Histograms used for gaussian distributions of numerical values
+### -> hist() -> histogram
+### -> truehist() -> normalized histogram
+
+```r
+hist(Animals$Body_length)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+###- which(data == "search term")
+
+###- add density curve to histogram
+### -> lines(density(dataset))
+
+###- qqPlot()  -> quantile-quantile plot; only 1 argument
+
+```r
+qqplot(Animals$Body_weight, Animals$Body_length)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+###- plot(var1 ~ var2, data = dataset )  -> var1=y, var2=x
+
+###- optional boxplot parameters
+### -> varwidth: variable-width boxplots with different sizes of data subsets
+### -> log: log-transformed y-values
+### -> las: more readable axis labels
+
+###- mosaicplot ~ scatterplot for categorial variables
+### -> mosaicplot(var1 ~ var2, data = dataset)
+
+###- bagplot (aplpack package): 2dimensional boxplot
+### -> cex = # : adjust size of point
+
+###- correlation plot: correlation coefficient between each pair of variables as elipse (slope and roundness important)
+### -> cor() to compute the correlation matrix with the correlation coefficients
+### -> corrplot(correlationMatrix, method = "ellipse") 
+
+###- decision trees (rpart package)
+### -> rpart(var1 ~ var2 + var3 (or just "."), data = dataset), then plot()
+
+##chapter 3
+
+###par() -> set graphical parameters globally
+### -> type values: "l"=lines, "p"=points, "o"=overlaid, "s"=steps, "n"=blank canvas (points(), lines(),... to add data)
+
+###- Gaussian density: 
+### -> dnorm(dataset, mean = __, sd = __)
+
+###- linear regression model to predict y from x
+### -> lm(y ~ x, data = df)
+
+###- text(x,y,labels,adj,srt,font, cex, col)
+### -> adj = 0.5 centered text, 0 left-& 1 right-justified
+### -> srt = angle of text
+### -> cex = size of text
+
+###- legend("position", pch = c(1,2), legend = c("text1", "text2"))
+
+```r
+hist(Animals$Body_length)
+legend(1, pch = 1, legend="Body Length")
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+###- axis()
+
+
+###- supsmu(x,y,bass) adds two trend lines to scatterplot-> one using  default parameters and other increased smoothness(regulated by bass)
+
+##Chapter 4
+
+###- matplot(data1, dataset[,c("data2","data3")]) 
+### -> multiple scatterplots on one set of axes
+
+###- wordcloud(words = names(___), freq = as.numeric(___),           scale = ___, min.freq = ___)
+### -> wordcloud package 
+
+###- multiple plots -> set up array with par(mfrow=c(x,y)), then create plots
+
+###- lauyout(matrix) uses matrix to define plot array
+###- layout.show(n=number of plots)
+
+##Chapter 5
+
+###-symbols(data1, data2, circles=data3, inches=vary radius) -> show relation between >= 3 variables
+
+```r
+symbols(Animals$Body_length, Animals$Body_weight, circles = Animals$Age, inches = 0.2)
+```
+
+![](AssignmentR4_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
+###- png(dataset.png) -> create png file
+###- dev.off() -> exit current environment
+
+###- suppressPackageStartupMessages(library()) -> avoid unncessary output in console
+
+## Other packages for plot creation
+###- tabplot -> tableplot()
+###- lattice -> xyplot()
+###- ggplot2 -> ggplot(dataset,aes(x=var1,y=var2))
+
